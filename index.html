@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO 策略：允许收录页面，禁止追踪链接 -->
+    <meta name="robots" content="index, nofollow">
+    <meta name="description" content="女祭司之眼 v1.4 中文版下载，高质量动态CG同人SLG。化身女祭司体验泉迷乱影，42枚CG+5组Spine动画，含基建雏形与全角色图鉴，PC端汉化整合版。">
+    
+    <title>女祭司之眼 v1.4 - 角色养成同游 | 官方中文版下载</title>
+
+    <style>
+        /* --- 圣所变量 --- */
+        :root {
+            --bg-warm: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.06);
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --accent-gold: #b45309; /* 琥珀金 */
+            --accent-deep: #451a03; /* 深褐 */
+            --radius-lg: 24px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* 背景纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* --- 头部标识 --- */
+        header {
+            margin-bottom: 60px;
+            max-width: 600px;
+        }
+
+        .eyebrow {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-gold);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--accent-deep);
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+            color: var(--text-sub);
+            max-width: 500px;
+        }
+
+        /* --- 核心双栏布局 --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2.5rem; }
+            .sidebar { order: -1; margin-bottom: 20px; }
+        }
+
+        /* --- 左侧：叙事 --- */
+        .narrative-section p {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            color: #334155;
+        }
+
+        .highlight-text {
+            font-size: 1.25rem;
+            color: var(--accent-deep);
+            font-weight: 600;
+            border-left: 3px solid var(--accent-gold);
+            padding-left: 20px;
+            margin: 30px 0;
+            line-height: 1.6;
+        }
+
+        .cast-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .cast-tag {
+            padding: 4px 12px;
+            background: rgba(180, 83, 9, 0.08);
+            color: var(--accent-gold);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* --- 预览图画廊 --- */
+        .gallery-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 35px;
+            margin-bottom: 10px;
+        }
+
+        .frame {
+            aspect-ratio: 16/9;
+            background: #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .frame:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border-color: rgba(180, 83, 9, 0.2);
+        }
+
+        .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+
+        .frame:hover img { opacity: 1; }
+
+        /* 占位符逻辑 */
+        .p-msg {
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; color: #94a3b8; pointer-events: none;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .frame img[src=""] + .p-msg,
+        .frame img:not([src]) + .p-msg { display: flex; }
+        .frame img[src]:not([src=""]) + .p-msg { display: none; }
+
+        /* --- 右侧：悬浮侧边栏 --- */
+        .sidebar {
+            position: sticky;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .glass-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .panel-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-sub);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .stat-val { font-weight: 700; color: var(--accent-deep); }
+
+        /* --- 下载按钮 --- */
+        .btn-dl {
+            display: block;
+            width: 100%;
+            background: var(--accent-deep);
+            color: #fff;
+            padding: 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-dl:hover { background: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(180, 83, 9, 0.2); }
+        .btn-dl:active { transform: translateY(0); }
+
+        .dl-hint {
+            margin-top: 12px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            text-align: center;
+        }
+
+        /* --- 更新日志 --- */
+        .log-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+            color: #475569;
+            display: flex;
+            gap: 10px;
+        }
+        .log-item:last-child { border-bottom: none; }
+        .log-dot {
+            width: 6px; height: 6px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="eyebrow">Sanctuary Project // v1.4</div>
+        <h1>女祭司之眼</h1>
+        <p class="lead">化身女祭司，在泉迷乱影中探寻真相。<br>一部用头发与黑眼圈换来的独立心血之作。</p>
+    </header>
+
+    <div class="content-grid">
+        <!-- 左侧：核心叙事 -->
+        <div class="narrative-section">
+            <p>《女祭司之眼》并非一款追求工业级完美的商业产品，而是一次<strong>独立创作者对“动态叙事”的极致探索</strong>。第一章「泉迷乱影」历经三个月打磨，虽自谦“数值用脚填、美术差强人意”，但每一帧 Spine 动画、每一段剧情分支，都凝聚着作者对 SLG 玩法的深刻理解与满腔热忱。</p>
+            
+            <div class="highlight-text">
+                “虽然制作略显粗糙，但满满都是作者的心血！<br>元素应有尽有，助你获得独特的游戏体验。”
+            </div>
+
+            <p>本作主打<strong>高自由度角色养成</strong>与<strong>沉浸式动态 CG 演出</strong>。你将面对性格迥异的 NPC，在信仰与欲望、责任与自我之间做出抉择。无论是铃兰的温柔、戴菲恩的冷峻，还是 Mon3tr 的神秘，每位角色都有专属的剧情线与差分表现。</p>
+
+            <!-- ✅ 三张预览图区域 -->
+            <div class="gallery-strip">
+                <div class="frame">
+                    <img src="images/1.jpg" alt="女祭司之眼 截图1">
+                    <div class="p-msg">NO SIGNAL</div>
+                </div>
+                <div class="frame">
+                    <img src="images/2.jpg" alt="女祭司之眼 截图2">
+                    <div class="p-msg">NO SIGNAL</div>
+                </div>
+                <div class="frame">
+                    <img src="images/3.jpg" alt="女祭司之眼 截图3">
+                    <div class="p-msg">NO SIGNAL</div>
+                </div>
+            </div>
+
+            <p style="margin-top:30px; font-size:0.9rem; color:var(--text-sub);"><strong>出场阵容：</strong></p>
+            <div class="cast-list">
+                <span class="cast-tag">铃兰</span>
+                <span class="cast-tag">戴菲恩</span>
+                <span class="cast-tag">歌蕾蒂娅</span>
+                <span class="cast-tag">亚叶</span>
+                <span class="cast-tag">烈夏</span>
+                <span class="cast-tag">塔季扬娜</span>
+                <span class="cast-tag">忍冬</span>
+                <span class="cast-tag">温德米尔公爵</span>
+                <span class="cast-tag">赫拉提娅</span>
+                <span class="cast-tag">菈玛莲</span>
+                <span class="cast-tag">莉莉娅</span>
+                <span class="cast-tag">西西里夫人</span>
+                <span class="cast-tag">扎罗</span>
+                <span class="cast-tag">安东尼奥</span>
+                <span class="cast-tag">拂哀菈</span>
+                <span class="cast-tag">Mon3tr</span>
+            </div>
+
+            <div style="margin-top:40px; padding:20px; background:rgba(0,0,0,0.02); border-radius:12px; font-size:0.85rem; color:#64748b;">
+                <strong>⚙️ 性能优化指南：</strong> 如遇运行卡顿，请查阅游戏根目录下的 <code>README.txt</code>，内含针对性解决方案。我们致力于在现有资源下提供最佳体验。
+            </div>
+        </div>
+
+        <!-- 右侧：悬浮面板 -->
+        <div class="sidebar">
+            <div class="glass-panel">
+                <div class="panel-title">资源概览</div>
+                <div class="stat-row"><span>版本:</span> <span class="stat-val">v1.4</span></div>
+                <div class="stat-row"><span>语言:</span> <span class="stat-val">官方中文</span></div>
+                <div class="stat-row"><span>平台:</span> <span class="stat-val">PC / Win</span></div>
+                <div class="stat-row"><span>CG总数:</span> <span class="stat-val">42枚</span></div>
+                <div class="stat-row"><span>Spine动画:</span> <span class="stat-val">5组</span></div>
+                <div class="stat-row"><span>状态:</span> <span class="stat-val">第一章完结</span></div>
+                
+                <button id="dl-btn" class="btn-dl" onclick="initDownload()">获取 v1.4 中文版</button>
+                <div class="dl-hint">⚠ 链接已加密 · 更新于 2026.06.06</div>
+            </div>
+
+            <div class="glass-panel">
+                <div class="panel-title">v1.4 更新日志</div>
+                <div class="log-item"><div class="log-dot"></div><span>引入商店系统雏形（调试中，后续版本实装）</span></div>
+                <div class="log-item"><div class="log-dot"></div><span>主菜单 UI 重构，交互更流畅</span></div>
+                <div class="log-item"><div class="log-dot"></div><span>新增基建雏形评分系统</span></div>
+                <div class="log-item"><div class="log-dot"></div><span>修复部分立绘显示异常</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const _payload = "aHR0cHM6Ly9nYW1ldHVhbi50b3AvMzI3OC5odG1s";
+
+    function initDownload() {
+        const btn = document.getElementById('dl-btn');
+        try {
+            btn.innerText = "正在验证权限...";
+            btn.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                const target = atob(_payload);
+                window.location.href = target;
+            }, 800); // 延迟干扰爬虫
+        } catch (e) {
+            alert("验证失败，请刷新重试。");
+            btn.innerText = "获取 v1.4 中文版";
+            btn.style.opacity = "1";
+        }
+    }
+</script>
+
+</body>
+</html>
